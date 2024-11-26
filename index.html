@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Map3D</title>
+    <style>
+        input{
+            margin: 5px;
+        }
+        input:not([type=submit]){
+            width: 50px;
+            text-align: right;
+        }
+        .overlay{
+            position: absolute;
+            top: 5px;
+            left: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="overlay">
+
+        <form>
+            <label>Latitude</label>
+            <input name="minLat" value="-40"><span>...</span><input name="maxLat" value="-13"><br>
+            <label>Longitude</label>
+            <input name="minLon" value="109"><span>...</span><input name="maxLon" value="155"><br>
+            <label>Zoom</label>
+            <input name="zoom" value="5"><input type="submit" value="OK">
+        </form>
+        <p>
+            ArrowUp = Move Forward<br>
+            ArrowDown = Move Backward<br>
+            ArrowLeft = Move Left<br>
+            ArrowRight = Move Right<br>
+            Shift+ArrowUp = Tilt Up<br>
+            Shift+ArrowDown = Tilt Down<br>
+            Shift+ArrowLeft = Rotate Left<br>
+            Shift+ArrowRight = Rotate Right<br>
+    
+        </p>
+    </div>
+    <script type="importmap">
+        {
+            "imports":{
+                "three":"https://cdn.jsdelivr.net/npm/three/+esm"
+            }
+        }
+    </script>
+    <script  type="module">
+        import Chart from "./chart.js"
+
+        
+        const chart = new Chart();
+
+        let form = document.querySelector("form");
+
+        loadMap(new FormData(form));
+
+        form.onsubmit = function(e)
+        {
+            e.preventDefault();
+            loadMap(new FormData(this));
+        }
+
+        function loadMap(data)
+        {
+            let minLon = +data.get("minLon");
+            let minLat = +data.get("minLat");
+            let maxLon = +data.get("maxLon");
+            let maxLat = +data.get("maxLat");
+            let zoom = +data.get("zoom");
+
+            chart.drawMap(minLon, minLat, maxLon, maxLat, data.get("zoom"));
+            
+        }
+        
+        
+        
+    </script>
+</body>
+</html>
